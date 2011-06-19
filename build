@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Requires ANTLR_HOME to be set to a path with antlr-3.1.3.jar on
+java -classpath $ANTLR_HOME/antlr-3.1.3.jar org.antlr.Tool gleampython/gleam.g
