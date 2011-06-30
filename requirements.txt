@@ -1,1 +1,2 @@
 antlr-python-runtime==3.1.3
+nose
