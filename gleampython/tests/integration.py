@@ -88,3 +88,27 @@ class TestBasicNode(TestCase):
                  IDENTIFIER
                IDENTIFIER
         """)
+
+    def test_call_macro_with_block(self):
+        self.check_parse("""
+            form(class='class') {
+            }
+        """, """
+            CALL
+             IDENTIFIER
+             ARGS
+              IDENTIFIER
+               STRINGLITERAL
+             BLOCK
+        """)
+    
+    def test_empty_node(self):
+        self.check_parse("""
+            node br
+            node br
+        """, """
+            NODE
+             IDENTIFIER
+            NODE
+             IDENTIFIER
+        """)

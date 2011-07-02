@@ -12,6 +12,7 @@ tokens {
     PROG;
     PARAMS;
     BLOCK;
+    CALL;
 	PLUS 	= '+' ;
 	MINUS	= '-' ;
 	MULT	= '*' ;
@@ -50,11 +51,13 @@ param : IDENTIFIER;
 parameters : LPAREN IDENTIFIER RPAREN;
 block : LBRACE stmt* RBRACE -> ^(BLOCK stmt*);
 stmt : macro
-     | NODE IDENTIFIER args? expr -> ^(NODE IDENTIFIER args expr)
+     | NODE IDENTIFIER args? expr? -> ^(NODE IDENTIFIER args? expr?)
+     | call
      ;
+call : IDENTIFIER args? expr? -> ^(CALL IDENTIFIER args? expr?);
 args : lparen=LPAREN (arg (',' arg)*)? RPAREN -> ^(ARGS[$lparen] arg*);
 arg : IDENTIFIER EQUALS expr -> ^(IDENTIFIER expr);
-expr : STRINGLITERAL | NUMBER | IDENTIFIER;
+expr : STRINGLITERAL | NUMBER | IDENTIFIER | block;
 for_expr : FOR IDENTIFIER IN IDENTIFIER block;
 
 
@@ -77,6 +80,7 @@ NUMBER	: (DIGIT)+ ;
 
 STRINGLITERAL
     :  '"' ( EscapeSequence | ~('\\'|'"') )* '"'
+    |  '\'' ( EscapeSequence | ~('\\'|'\'') )* '\''
     ;
 
 fragment
