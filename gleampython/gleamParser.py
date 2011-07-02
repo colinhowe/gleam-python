@@ -1,4 +1,4 @@
-# $ANTLR 3.1.3 Mar 17, 2009 19:23:44 gleampython/gleam.g 2011-07-02 11:49:10
+# $ANTLR 3.1.3 Mar 17, 2009 19:23:44 gleampython/gleam.g 2011-07-02 15:00:19
 
 import sys
 from antlr3 import *
@@ -347,7 +347,7 @@ class gleamParser(Parser):
                     stream_block.add(block8.tree)
 
                 # AST Rewrite
-                # elements: param, IDENTIFIER, block, MACRO, value
+                # elements: value, param, IDENTIFIER, block, MACRO
                 # token labels: value
                 # rule labels: retval
                 # token list labels: 
@@ -822,7 +822,7 @@ class gleamParser(Parser):
 
 
                     # AST Rewrite
-                    # elements: args, IDENTIFIER, NODE, expr
+                    # elements: expr, args, IDENTIFIER, NODE
                     # token labels: 
                     # rule labels: retval
                     # token list labels: 
@@ -985,7 +985,7 @@ class gleamParser(Parser):
 
 
                 # AST Rewrite
-                # elements: IDENTIFIER, expr, args
+                # elements: IDENTIFIER, args, expr
                 # token labels: 
                 # rule labels: retval
                 # token list labels: 
