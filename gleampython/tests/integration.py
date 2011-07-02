@@ -112,3 +112,32 @@ class TestBasicNode(TestCase):
             NODE
              IDENTIFIER
         """)
+
+    def test_macro_defn_and_invoke(self):
+        self.check_parse("""
+            macro form(class) value {
+                node form value
+            }
+
+            form(class='class') {
+                node br
+            }
+        """, """
+            MACRO
+             IDENTIFIER
+             PARAMS
+              IDENTIFIER
+             IDENTIFIER
+             BLOCK
+              NODE
+               IDENTIFIER
+               IDENTIFIER
+            CALL
+             IDENTIFIER
+             ARGS
+              IDENTIFIER
+               STRINGLITERAL
+             BLOCK
+              NODE
+               IDENTIFIER
+        """)
