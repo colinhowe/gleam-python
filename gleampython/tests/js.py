@@ -44,3 +44,18 @@ class TestBasicNode(TestCase):
         """, """
             $gleam.makeNode("form", {class: "clazz", name: "Bob"}, "text");
         """)
+
+    def test_define_and_invoke_macro_with_simple_value(self):
+        self.check_js("""
+            macro form(class) value {
+                node form(class=class) value
+            }
+
+            form(class='class') "hello"
+        """, """
+            $gleam.addMacro("form", function(args, value) {
+                var class = args["class"];
+                $gleam.makeNode("form", {class: class}, value);
+            });
+            $gleam.macros.form({class: "class"}, "hello");
+        """)
