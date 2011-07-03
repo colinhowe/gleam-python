@@ -44,6 +44,15 @@ class ToJsTraverser(object):
     def NODE__IDENTIFIER(self, node):
         return '"%s"' % node.text
 
+    def BLOCK(self, node):
+        code = '\n'.join([
+            self._to_js(stmt)
+            for stmt in node.children
+        ])
+        return """function() {
+    %s
+}""" % code
+
     def NODE(self, node):
         args = '{}'
         name = self._to_js(node.children.pop(0), context=node)
