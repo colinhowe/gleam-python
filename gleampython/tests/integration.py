@@ -77,7 +77,8 @@ class TestBasicNode(TestCase):
              PARAMS
               IDENTIFIER
               IDENTIFIER
-             IDENTIFIER
+             VALUE
+              IDENTIFIER
              BLOCK
               NODE
                IDENTIFIER
@@ -127,7 +128,8 @@ class TestBasicNode(TestCase):
              IDENTIFIER
              PARAMS
               IDENTIFIER
-             IDENTIFIER
+             VALUE
+              IDENTIFIER
              BLOCK
               NODE
                IDENTIFIER

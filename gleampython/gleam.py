@@ -83,6 +83,8 @@ class ToJsTraverser(object):
             for param_node in params_node.children
         ])
         value_node = node.children.pop(0)
+        if value_node.children:
+            value_node = value_node.children.pop(0)
         value_name = value_node.text
         macro_code = self._to_js(node.children.pop(0), node)
             

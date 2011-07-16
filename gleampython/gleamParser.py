@@ -1,4 +1,4 @@
-# $ANTLR 3.1.3 Mar 17, 2009 19:23:44 gleampython/gleam.g 2011-07-13 20:45:51
+# $ANTLR 3.1.3 Mar 17, 2009 19:23:44 gleampython/gleam.g 2011-07-16 21:25:58
 
 import sys
 from antlr3 import *
@@ -18,48 +18,50 @@ from gleamLexer import gleamLexer
 HIDDEN = BaseRecognizer.HIDDEN
 
 # token types
-NODE=19
-RBRACE=18
-LINE_COMMENT=31
-LBRACE=17
-NUMBER=22
-IdentifierStart=32
-WHITESPACE=29
-FOR=23
-EQUALS=20
-MINUS=10
-MULT=11
+NODE=20
+RBRACE=19
+LINE_COMMENT=32
+LBRACE=18
+NUMBER=23
+IdentifierStart=33
+WHITESPACE=30
+FOR=24
+EQUALS=21
+VALUE=9
+MINUS=11
+MULT=12
 EOF=-1
-HexDigit=28
-LPAREN=15
-RPAREN=16
+HexDigit=29
+LPAREN=16
+RPAREN=17
 PROG=5
-IN=24
-T__35=35
-SurrogateIdentifer=34
-UnicodeEscape=27
-STRINGLITERAL=21
-IDENTIFIER=14
+IN=25
+T__36=36
+SurrogateIdentifer=35
+UnicodeEscape=28
+STRINGLITERAL=22
+IDENTIFIER=15
 BLOCK=7
 ARGS=4
-PLUS=9
+PLUS=10
 CALL=8
-DIGIT=25
-DIV=12
-COMMENT=30
-MACRO=13
-EscapeSequence=26
-IdentifierPart=33
+DIGIT=26
+DIV=13
+COMMENT=31
+MACRO=14
+EscapeSequence=27
+IdentifierPart=34
 PARAMS=6
 
 # token names
 tokenNames = [
     "<invalid>", "<EOR>", "<DOWN>", "<UP>", 
-    "ARGS", "PROG", "PARAMS", "BLOCK", "CALL", "PLUS", "MINUS", "MULT", 
-    "DIV", "MACRO", "IDENTIFIER", "LPAREN", "RPAREN", "LBRACE", "RBRACE", 
-    "NODE", "EQUALS", "STRINGLITERAL", "NUMBER", "FOR", "IN", "DIGIT", "EscapeSequence", 
-    "UnicodeEscape", "HexDigit", "WHITESPACE", "COMMENT", "LINE_COMMENT", 
-    "IdentifierStart", "IdentifierPart", "SurrogateIdentifer", "','"
+    "ARGS", "PROG", "PARAMS", "BLOCK", "CALL", "VALUE", "PLUS", "MINUS", 
+    "MULT", "DIV", "MACRO", "IDENTIFIER", "LPAREN", "RPAREN", "LBRACE", 
+    "RBRACE", "NODE", "EQUALS", "STRINGLITERAL", "NUMBER", "FOR", "IN", 
+    "DIGIT", "EscapeSequence", "UnicodeEscape", "HexDigit", "WHITESPACE", 
+    "COMMENT", "LINE_COMMENT", "IdentifierStart", "IdentifierPart", "SurrogateIdentifer", 
+    "','"
 ]
 
 
@@ -108,7 +110,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "prog"
-    # gleampython/gleam.g:47:1: prog : ( stmt )* -> ^( PROG ( stmt )* ) ;
+    # gleampython/gleam.g:48:1: prog : ( stmt )* -> ^( PROG ( stmt )* ) ;
     def prog(self, ):
 
         retval = self.prog_return()
@@ -128,10 +130,10 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:47:6: ( ( stmt )* -> ^( PROG ( stmt )* ) )
-                # gleampython/gleam.g:47:8: ( stmt )*
+                # gleampython/gleam.g:48:6: ( ( stmt )* -> ^( PROG ( stmt )* ) )
+                # gleampython/gleam.g:48:8: ( stmt )*
                 pass 
-                # gleampython/gleam.g:47:8: ( stmt )*
+                # gleampython/gleam.g:48:8: ( stmt )*
                 while True: #loop1
                     alt1 = 2
                     LA1_0 = self.input.LA(1)
@@ -143,7 +145,7 @@ class gleamParser(Parser):
                     if alt1 == 1:
                         # gleampython/gleam.g:0:0: stmt
                         pass 
-                        self._state.following.append(self.FOLLOW_stmt_in_prog142)
+                        self._state.following.append(self.FOLLOW_stmt_in_prog149)
                         stmt1 = self.stmt()
 
                         self._state.following.pop()
@@ -172,12 +174,12 @@ class gleamParser(Parser):
 
 
                     root_0 = self._adaptor.nil()
-                    # 47:14: -> ^( PROG ( stmt )* )
-                    # gleampython/gleam.g:47:17: ^( PROG ( stmt )* )
+                    # 48:14: -> ^( PROG ( stmt )* )
+                    # gleampython/gleam.g:48:17: ^( PROG ( stmt )* )
                     root_1 = self._adaptor.nil()
                     root_1 = self._adaptor.becomeRoot(self._adaptor.createFromType(PROG, "PROG"), root_1)
 
-                    # gleampython/gleam.g:47:24: ( stmt )*
+                    # gleampython/gleam.g:48:24: ( stmt )*
                     while stream_stmt.hasNext():
                         self._adaptor.addChild(root_1, stream_stmt.nextTree())
 
@@ -224,7 +226,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "macro"
-    # gleampython/gleam.g:48:1: macro : MACRO IDENTIFIER lparen= '(' ( param ( ',' param )* )? ')' (value= IDENTIFIER )? block -> ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ( $value)? block ) ;
+    # gleampython/gleam.g:49:1: macro : MACRO IDENTIFIER lparen= '(' ( param ( ',' param )* )? ')' (value= IDENTIFIER )? block -> ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ^( VALUE ( $value)? ) block ) ;
     def macro(self, ):
 
         retval = self.macro_return()
@@ -252,7 +254,7 @@ class gleamParser(Parser):
         char_literal5_tree = None
         char_literal7_tree = None
         stream_RPAREN = RewriteRuleTokenStream(self._adaptor, "token RPAREN")
-        stream_35 = RewriteRuleTokenStream(self._adaptor, "token 35")
+        stream_36 = RewriteRuleTokenStream(self._adaptor, "token 36")
         stream_MACRO = RewriteRuleTokenStream(self._adaptor, "token MACRO")
         stream_IDENTIFIER = RewriteRuleTokenStream(self._adaptor, "token IDENTIFIER")
         stream_LPAREN = RewriteRuleTokenStream(self._adaptor, "token LPAREN")
@@ -266,49 +268,49 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:48:7: ( MACRO IDENTIFIER lparen= '(' ( param ( ',' param )* )? ')' (value= IDENTIFIER )? block -> ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ( $value)? block ) )
-                # gleampython/gleam.g:48:9: MACRO IDENTIFIER lparen= '(' ( param ( ',' param )* )? ')' (value= IDENTIFIER )? block
+                # gleampython/gleam.g:49:7: ( MACRO IDENTIFIER lparen= '(' ( param ( ',' param )* )? ')' (value= IDENTIFIER )? block -> ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ^( VALUE ( $value)? ) block ) )
+                # gleampython/gleam.g:49:9: MACRO IDENTIFIER lparen= '(' ( param ( ',' param )* )? ')' (value= IDENTIFIER )? block
                 pass 
-                MACRO2=self.match(self.input, MACRO, self.FOLLOW_MACRO_in_macro159) 
+                MACRO2=self.match(self.input, MACRO, self.FOLLOW_MACRO_in_macro166) 
                 if self._state.backtracking == 0:
                     stream_MACRO.add(MACRO2)
-                IDENTIFIER3=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_macro161) 
+                IDENTIFIER3=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_macro168) 
                 if self._state.backtracking == 0:
                     stream_IDENTIFIER.add(IDENTIFIER3)
-                lparen=self.match(self.input, LPAREN, self.FOLLOW_LPAREN_in_macro165) 
+                lparen=self.match(self.input, LPAREN, self.FOLLOW_LPAREN_in_macro172) 
                 if self._state.backtracking == 0:
                     stream_LPAREN.add(lparen)
-                # gleampython/gleam.g:48:37: ( param ( ',' param )* )?
+                # gleampython/gleam.g:49:37: ( param ( ',' param )* )?
                 alt3 = 2
                 LA3_0 = self.input.LA(1)
 
                 if (LA3_0 == IDENTIFIER) :
                     alt3 = 1
                 if alt3 == 1:
-                    # gleampython/gleam.g:48:38: param ( ',' param )*
+                    # gleampython/gleam.g:49:38: param ( ',' param )*
                     pass 
-                    self._state.following.append(self.FOLLOW_param_in_macro168)
+                    self._state.following.append(self.FOLLOW_param_in_macro175)
                     param4 = self.param()
 
                     self._state.following.pop()
                     if self._state.backtracking == 0:
                         stream_param.add(param4.tree)
-                    # gleampython/gleam.g:48:44: ( ',' param )*
+                    # gleampython/gleam.g:49:44: ( ',' param )*
                     while True: #loop2
                         alt2 = 2
                         LA2_0 = self.input.LA(1)
 
-                        if (LA2_0 == 35) :
+                        if (LA2_0 == 36) :
                             alt2 = 1
 
 
                         if alt2 == 1:
-                            # gleampython/gleam.g:48:45: ',' param
+                            # gleampython/gleam.g:49:45: ',' param
                             pass 
-                            char_literal5=self.match(self.input, 35, self.FOLLOW_35_in_macro171) 
+                            char_literal5=self.match(self.input, 36, self.FOLLOW_36_in_macro178) 
                             if self._state.backtracking == 0:
-                                stream_35.add(char_literal5)
-                            self._state.following.append(self.FOLLOW_param_in_macro173)
+                                stream_36.add(char_literal5)
+                            self._state.following.append(self.FOLLOW_param_in_macro180)
                             param6 = self.param()
 
                             self._state.following.pop()
@@ -321,10 +323,10 @@ class gleamParser(Parser):
 
 
 
-                char_literal7=self.match(self.input, RPAREN, self.FOLLOW_RPAREN_in_macro179) 
+                char_literal7=self.match(self.input, RPAREN, self.FOLLOW_RPAREN_in_macro186) 
                 if self._state.backtracking == 0:
                     stream_RPAREN.add(char_literal7)
-                # gleampython/gleam.g:48:68: (value= IDENTIFIER )?
+                # gleampython/gleam.g:49:68: (value= IDENTIFIER )?
                 alt4 = 2
                 LA4_0 = self.input.LA(1)
 
@@ -333,13 +335,13 @@ class gleamParser(Parser):
                 if alt4 == 1:
                     # gleampython/gleam.g:0:0: value= IDENTIFIER
                     pass 
-                    value=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_macro183) 
+                    value=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_macro190) 
                     if self._state.backtracking == 0:
                         stream_IDENTIFIER.add(value)
 
 
 
-                self._state.following.append(self.FOLLOW_block_in_macro186)
+                self._state.following.append(self.FOLLOW_block_in_macro193)
                 block8 = self.block()
 
                 self._state.following.pop()
@@ -347,7 +349,7 @@ class gleamParser(Parser):
                     stream_block.add(block8.tree)
 
                 # AST Rewrite
-                # elements: value, param, IDENTIFIER, block, MACRO
+                # elements: IDENTIFIER, block, MACRO, value, param
                 # token labels: value
                 # rule labels: retval
                 # token list labels: 
@@ -365,17 +367,17 @@ class gleamParser(Parser):
 
 
                     root_0 = self._adaptor.nil()
-                    # 49:7: -> ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ( $value)? block )
-                    # gleampython/gleam.g:49:10: ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ( $value)? block )
+                    # 50:7: -> ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ^( VALUE ( $value)? ) block )
+                    # gleampython/gleam.g:50:10: ^( MACRO IDENTIFIER ^( PARAMS[$lparen] ( param )* ) ^( VALUE ( $value)? ) block )
                     root_1 = self._adaptor.nil()
                     root_1 = self._adaptor.becomeRoot(stream_MACRO.nextNode(), root_1)
 
                     self._adaptor.addChild(root_1, stream_IDENTIFIER.nextNode())
-                    # gleampython/gleam.g:49:29: ^( PARAMS[$lparen] ( param )* )
+                    # gleampython/gleam.g:50:29: ^( PARAMS[$lparen] ( param )* )
                     root_2 = self._adaptor.nil()
                     root_2 = self._adaptor.becomeRoot(self._adaptor.create(PARAMS, lparen), root_2)
 
-                    # gleampython/gleam.g:49:47: ( param )*
+                    # gleampython/gleam.g:50:47: ( param )*
                     while stream_param.hasNext():
                         self._adaptor.addChild(root_2, stream_param.nextTree())
 
@@ -383,12 +385,18 @@ class gleamParser(Parser):
                     stream_param.reset();
 
                     self._adaptor.addChild(root_1, root_2)
-                    # gleampython/gleam.g:49:55: ( $value)?
+                    # gleampython/gleam.g:50:55: ^( VALUE ( $value)? )
+                    root_2 = self._adaptor.nil()
+                    root_2 = self._adaptor.becomeRoot(self._adaptor.createFromType(VALUE, "VALUE"), root_2)
+
+                    # gleampython/gleam.g:50:63: ( $value)?
                     if stream_value.hasNext():
-                        self._adaptor.addChild(root_1, stream_value.nextNode())
+                        self._adaptor.addChild(root_2, stream_value.nextNode())
 
 
                     stream_value.reset();
+
+                    self._adaptor.addChild(root_1, root_2)
                     self._adaptor.addChild(root_1, stream_block.nextTree())
 
                     self._adaptor.addChild(root_0, root_1)
@@ -431,7 +439,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "param"
-    # gleampython/gleam.g:50:1: param : IDENTIFIER ;
+    # gleampython/gleam.g:51:1: param : IDENTIFIER ;
     def param(self, ):
 
         retval = self.param_return()
@@ -451,12 +459,12 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:50:7: ( IDENTIFIER )
-                # gleampython/gleam.g:50:9: IDENTIFIER
+                # gleampython/gleam.g:51:7: ( IDENTIFIER )
+                # gleampython/gleam.g:51:9: IDENTIFIER
                 pass 
                 root_0 = self._adaptor.nil()
 
-                IDENTIFIER9=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_param222)
+                IDENTIFIER9=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_param233)
                 if self._state.backtracking == 0:
 
                     IDENTIFIER9_tree = self._adaptor.createWithPayload(IDENTIFIER9)
@@ -497,7 +505,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "parameters"
-    # gleampython/gleam.g:51:1: parameters : LPAREN IDENTIFIER RPAREN ;
+    # gleampython/gleam.g:52:1: parameters : LPAREN IDENTIFIER RPAREN ;
     def parameters(self, ):
 
         retval = self.parameters_return()
@@ -521,24 +529,24 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:51:12: ( LPAREN IDENTIFIER RPAREN )
-                # gleampython/gleam.g:51:14: LPAREN IDENTIFIER RPAREN
+                # gleampython/gleam.g:52:12: ( LPAREN IDENTIFIER RPAREN )
+                # gleampython/gleam.g:52:14: LPAREN IDENTIFIER RPAREN
                 pass 
                 root_0 = self._adaptor.nil()
 
-                LPAREN10=self.match(self.input, LPAREN, self.FOLLOW_LPAREN_in_parameters229)
+                LPAREN10=self.match(self.input, LPAREN, self.FOLLOW_LPAREN_in_parameters240)
                 if self._state.backtracking == 0:
 
                     LPAREN10_tree = self._adaptor.createWithPayload(LPAREN10)
                     self._adaptor.addChild(root_0, LPAREN10_tree)
 
-                IDENTIFIER11=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_parameters231)
+                IDENTIFIER11=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_parameters242)
                 if self._state.backtracking == 0:
 
                     IDENTIFIER11_tree = self._adaptor.createWithPayload(IDENTIFIER11)
                     self._adaptor.addChild(root_0, IDENTIFIER11_tree)
 
-                RPAREN12=self.match(self.input, RPAREN, self.FOLLOW_RPAREN_in_parameters233)
+                RPAREN12=self.match(self.input, RPAREN, self.FOLLOW_RPAREN_in_parameters244)
                 if self._state.backtracking == 0:
 
                     RPAREN12_tree = self._adaptor.createWithPayload(RPAREN12)
@@ -579,7 +587,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "block"
-    # gleampython/gleam.g:52:1: block : LBRACE ( stmt )* RBRACE -> ^( BLOCK ( stmt )* ) ;
+    # gleampython/gleam.g:53:1: block : LBRACE ( stmt )* RBRACE -> ^( BLOCK ( stmt )* ) ;
     def block(self, ):
 
         retval = self.block_return()
@@ -605,13 +613,13 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:52:7: ( LBRACE ( stmt )* RBRACE -> ^( BLOCK ( stmt )* ) )
-                # gleampython/gleam.g:52:9: LBRACE ( stmt )* RBRACE
+                # gleampython/gleam.g:53:7: ( LBRACE ( stmt )* RBRACE -> ^( BLOCK ( stmt )* ) )
+                # gleampython/gleam.g:53:9: LBRACE ( stmt )* RBRACE
                 pass 
-                LBRACE13=self.match(self.input, LBRACE, self.FOLLOW_LBRACE_in_block240) 
+                LBRACE13=self.match(self.input, LBRACE, self.FOLLOW_LBRACE_in_block251) 
                 if self._state.backtracking == 0:
                     stream_LBRACE.add(LBRACE13)
-                # gleampython/gleam.g:52:16: ( stmt )*
+                # gleampython/gleam.g:53:16: ( stmt )*
                 while True: #loop5
                     alt5 = 2
                     LA5_0 = self.input.LA(1)
@@ -623,7 +631,7 @@ class gleamParser(Parser):
                     if alt5 == 1:
                         # gleampython/gleam.g:0:0: stmt
                         pass 
-                        self._state.following.append(self.FOLLOW_stmt_in_block242)
+                        self._state.following.append(self.FOLLOW_stmt_in_block253)
                         stmt14 = self.stmt()
 
                         self._state.following.pop()
@@ -633,7 +641,7 @@ class gleamParser(Parser):
 
                     else:
                         break #loop5
-                RBRACE15=self.match(self.input, RBRACE, self.FOLLOW_RBRACE_in_block245) 
+                RBRACE15=self.match(self.input, RBRACE, self.FOLLOW_RBRACE_in_block256) 
                 if self._state.backtracking == 0:
                     stream_RBRACE.add(RBRACE15)
 
@@ -655,12 +663,12 @@ class gleamParser(Parser):
 
 
                     root_0 = self._adaptor.nil()
-                    # 52:29: -> ^( BLOCK ( stmt )* )
-                    # gleampython/gleam.g:52:32: ^( BLOCK ( stmt )* )
+                    # 53:29: -> ^( BLOCK ( stmt )* )
+                    # gleampython/gleam.g:53:32: ^( BLOCK ( stmt )* )
                     root_1 = self._adaptor.nil()
                     root_1 = self._adaptor.becomeRoot(self._adaptor.createFromType(BLOCK, "BLOCK"), root_1)
 
-                    # gleampython/gleam.g:52:40: ( stmt )*
+                    # gleampython/gleam.g:53:40: ( stmt )*
                     while stream_stmt.hasNext():
                         self._adaptor.addChild(root_1, stream_stmt.nextTree())
 
@@ -707,7 +715,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "stmt"
-    # gleampython/gleam.g:53:1: stmt : ( macro | NODE IDENTIFIER ( args )? ( expr )? -> ^( NODE IDENTIFIER ( args )? ( expr )? ) | call );
+    # gleampython/gleam.g:54:1: stmt : ( macro | NODE IDENTIFIER ( args )? ( expr )? -> ^( NODE IDENTIFIER ( args )? ( expr )? ) | call );
     def stmt(self, ):
 
         retval = self.stmt_return()
@@ -740,7 +748,7 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:53:6: ( macro | NODE IDENTIFIER ( args )? ( expr )? -> ^( NODE IDENTIFIER ( args )? ( expr )? ) | call )
+                # gleampython/gleam.g:54:6: ( macro | NODE IDENTIFIER ( args )? ( expr )? -> ^( NODE IDENTIFIER ( args )? ( expr )? ) | call )
                 alt8 = 3
                 LA8 = self.input.LA(1)
                 if LA8 == MACRO:
@@ -758,11 +766,11 @@ class gleamParser(Parser):
                     raise nvae
 
                 if alt8 == 1:
-                    # gleampython/gleam.g:53:8: macro
+                    # gleampython/gleam.g:54:8: macro
                     pass 
                     root_0 = self._adaptor.nil()
 
-                    self._state.following.append(self.FOLLOW_macro_in_stmt261)
+                    self._state.following.append(self.FOLLOW_macro_in_stmt272)
                     macro16 = self.macro()
 
                     self._state.following.pop()
@@ -771,15 +779,15 @@ class gleamParser(Parser):
 
 
                 elif alt8 == 2:
-                    # gleampython/gleam.g:54:8: NODE IDENTIFIER ( args )? ( expr )?
+                    # gleampython/gleam.g:55:8: NODE IDENTIFIER ( args )? ( expr )?
                     pass 
-                    NODE17=self.match(self.input, NODE, self.FOLLOW_NODE_in_stmt270) 
+                    NODE17=self.match(self.input, NODE, self.FOLLOW_NODE_in_stmt281) 
                     if self._state.backtracking == 0:
                         stream_NODE.add(NODE17)
-                    IDENTIFIER18=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_stmt272) 
+                    IDENTIFIER18=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_stmt283) 
                     if self._state.backtracking == 0:
                         stream_IDENTIFIER.add(IDENTIFIER18)
-                    # gleampython/gleam.g:54:24: ( args )?
+                    # gleampython/gleam.g:55:24: ( args )?
                     alt6 = 2
                     LA6_0 = self.input.LA(1)
 
@@ -788,7 +796,7 @@ class gleamParser(Parser):
                     if alt6 == 1:
                         # gleampython/gleam.g:0:0: args
                         pass 
-                        self._state.following.append(self.FOLLOW_args_in_stmt274)
+                        self._state.following.append(self.FOLLOW_args_in_stmt285)
                         args19 = self.args()
 
                         self._state.following.pop()
@@ -797,7 +805,7 @@ class gleamParser(Parser):
 
 
 
-                    # gleampython/gleam.g:54:30: ( expr )?
+                    # gleampython/gleam.g:55:30: ( expr )?
                     alt7 = 2
                     LA7_0 = self.input.LA(1)
 
@@ -811,7 +819,7 @@ class gleamParser(Parser):
                     if alt7 == 1:
                         # gleampython/gleam.g:0:0: expr
                         pass 
-                        self._state.following.append(self.FOLLOW_expr_in_stmt277)
+                        self._state.following.append(self.FOLLOW_expr_in_stmt288)
                         expr20 = self.expr()
 
                         self._state.following.pop()
@@ -822,7 +830,7 @@ class gleamParser(Parser):
 
 
                     # AST Rewrite
-                    # elements: expr, args, IDENTIFIER, NODE
+                    # elements: IDENTIFIER, NODE, args, expr
                     # token labels: 
                     # rule labels: retval
                     # token list labels: 
@@ -839,19 +847,19 @@ class gleamParser(Parser):
 
 
                         root_0 = self._adaptor.nil()
-                        # 54:36: -> ^( NODE IDENTIFIER ( args )? ( expr )? )
-                        # gleampython/gleam.g:54:39: ^( NODE IDENTIFIER ( args )? ( expr )? )
+                        # 55:36: -> ^( NODE IDENTIFIER ( args )? ( expr )? )
+                        # gleampython/gleam.g:55:39: ^( NODE IDENTIFIER ( args )? ( expr )? )
                         root_1 = self._adaptor.nil()
                         root_1 = self._adaptor.becomeRoot(stream_NODE.nextNode(), root_1)
 
                         self._adaptor.addChild(root_1, stream_IDENTIFIER.nextNode())
-                        # gleampython/gleam.g:54:57: ( args )?
+                        # gleampython/gleam.g:55:57: ( args )?
                         if stream_args.hasNext():
                             self._adaptor.addChild(root_1, stream_args.nextTree())
 
 
                         stream_args.reset();
-                        # gleampython/gleam.g:54:63: ( expr )?
+                        # gleampython/gleam.g:55:63: ( expr )?
                         if stream_expr.hasNext():
                             self._adaptor.addChild(root_1, stream_expr.nextTree())
 
@@ -866,11 +874,11 @@ class gleamParser(Parser):
 
 
                 elif alt8 == 3:
-                    # gleampython/gleam.g:55:8: call
+                    # gleampython/gleam.g:56:8: call
                     pass 
                     root_0 = self._adaptor.nil()
 
-                    self._state.following.append(self.FOLLOW_call_in_stmt301)
+                    self._state.following.append(self.FOLLOW_call_in_stmt312)
                     call21 = self.call()
 
                     self._state.following.pop()
@@ -910,7 +918,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "call"
-    # gleampython/gleam.g:57:1: call : IDENTIFIER ( args )? ( expr )? -> ^( CALL IDENTIFIER ( args )? ( expr )? ) ;
+    # gleampython/gleam.g:58:1: call : IDENTIFIER ( args )? ( expr )? -> ^( CALL IDENTIFIER ( args )? ( expr )? ) ;
     def call(self, ):
 
         retval = self.call_return()
@@ -936,13 +944,13 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:57:6: ( IDENTIFIER ( args )? ( expr )? -> ^( CALL IDENTIFIER ( args )? ( expr )? ) )
-                # gleampython/gleam.g:57:8: IDENTIFIER ( args )? ( expr )?
+                # gleampython/gleam.g:58:6: ( IDENTIFIER ( args )? ( expr )? -> ^( CALL IDENTIFIER ( args )? ( expr )? ) )
+                # gleampython/gleam.g:58:8: IDENTIFIER ( args )? ( expr )?
                 pass 
-                IDENTIFIER22=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_call314) 
+                IDENTIFIER22=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_call325) 
                 if self._state.backtracking == 0:
                     stream_IDENTIFIER.add(IDENTIFIER22)
-                # gleampython/gleam.g:57:19: ( args )?
+                # gleampython/gleam.g:58:19: ( args )?
                 alt9 = 2
                 LA9_0 = self.input.LA(1)
 
@@ -951,7 +959,7 @@ class gleamParser(Parser):
                 if alt9 == 1:
                     # gleampython/gleam.g:0:0: args
                     pass 
-                    self._state.following.append(self.FOLLOW_args_in_call316)
+                    self._state.following.append(self.FOLLOW_args_in_call327)
                     args23 = self.args()
 
                     self._state.following.pop()
@@ -960,7 +968,7 @@ class gleamParser(Parser):
 
 
 
-                # gleampython/gleam.g:57:25: ( expr )?
+                # gleampython/gleam.g:58:25: ( expr )?
                 alt10 = 2
                 LA10_0 = self.input.LA(1)
 
@@ -974,7 +982,7 @@ class gleamParser(Parser):
                 if alt10 == 1:
                     # gleampython/gleam.g:0:0: expr
                     pass 
-                    self._state.following.append(self.FOLLOW_expr_in_call319)
+                    self._state.following.append(self.FOLLOW_expr_in_call330)
                     expr24 = self.expr()
 
                     self._state.following.pop()
@@ -985,7 +993,7 @@ class gleamParser(Parser):
 
 
                 # AST Rewrite
-                # elements: IDENTIFIER, args, expr
+                # elements: args, IDENTIFIER, expr
                 # token labels: 
                 # rule labels: retval
                 # token list labels: 
@@ -1002,19 +1010,19 @@ class gleamParser(Parser):
 
 
                     root_0 = self._adaptor.nil()
-                    # 57:31: -> ^( CALL IDENTIFIER ( args )? ( expr )? )
-                    # gleampython/gleam.g:57:34: ^( CALL IDENTIFIER ( args )? ( expr )? )
+                    # 58:31: -> ^( CALL IDENTIFIER ( args )? ( expr )? )
+                    # gleampython/gleam.g:58:34: ^( CALL IDENTIFIER ( args )? ( expr )? )
                     root_1 = self._adaptor.nil()
                     root_1 = self._adaptor.becomeRoot(self._adaptor.createFromType(CALL, "CALL"), root_1)
 
                     self._adaptor.addChild(root_1, stream_IDENTIFIER.nextNode())
-                    # gleampython/gleam.g:57:52: ( args )?
+                    # gleampython/gleam.g:58:52: ( args )?
                     if stream_args.hasNext():
                         self._adaptor.addChild(root_1, stream_args.nextTree())
 
 
                     stream_args.reset();
-                    # gleampython/gleam.g:57:58: ( expr )?
+                    # gleampython/gleam.g:58:58: ( expr )?
                     if stream_expr.hasNext():
                         self._adaptor.addChild(root_1, stream_expr.nextTree())
 
@@ -1061,7 +1069,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "args"
-    # gleampython/gleam.g:58:1: args : lparen= LPAREN ( arg ( ',' arg )* )? RPAREN -> ^( ARGS[$lparen] ( arg )* ) ;
+    # gleampython/gleam.g:59:1: args : lparen= LPAREN ( arg ( ',' arg )* )? RPAREN -> ^( ARGS[$lparen] ( arg )* ) ;
     def args(self, ):
 
         retval = self.args_return()
@@ -1081,7 +1089,7 @@ class gleamParser(Parser):
         char_literal26_tree = None
         RPAREN28_tree = None
         stream_RPAREN = RewriteRuleTokenStream(self._adaptor, "token RPAREN")
-        stream_35 = RewriteRuleTokenStream(self._adaptor, "token 35")
+        stream_36 = RewriteRuleTokenStream(self._adaptor, "token 36")
         stream_LPAREN = RewriteRuleTokenStream(self._adaptor, "token LPAREN")
         stream_arg = RewriteRuleSubtreeStream(self._adaptor, "rule arg")
         success = False
@@ -1092,43 +1100,43 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:58:6: (lparen= LPAREN ( arg ( ',' arg )* )? RPAREN -> ^( ARGS[$lparen] ( arg )* ) )
-                # gleampython/gleam.g:58:8: lparen= LPAREN ( arg ( ',' arg )* )? RPAREN
+                # gleampython/gleam.g:59:6: (lparen= LPAREN ( arg ( ',' arg )* )? RPAREN -> ^( ARGS[$lparen] ( arg )* ) )
+                # gleampython/gleam.g:59:8: lparen= LPAREN ( arg ( ',' arg )* )? RPAREN
                 pass 
-                lparen=self.match(self.input, LPAREN, self.FOLLOW_LPAREN_in_args343) 
+                lparen=self.match(self.input, LPAREN, self.FOLLOW_LPAREN_in_args354) 
                 if self._state.backtracking == 0:
                     stream_LPAREN.add(lparen)
-                # gleampython/gleam.g:58:22: ( arg ( ',' arg )* )?
+                # gleampython/gleam.g:59:22: ( arg ( ',' arg )* )?
                 alt12 = 2
                 LA12_0 = self.input.LA(1)
 
                 if (LA12_0 == IDENTIFIER) :
                     alt12 = 1
                 if alt12 == 1:
-                    # gleampython/gleam.g:58:23: arg ( ',' arg )*
+                    # gleampython/gleam.g:59:23: arg ( ',' arg )*
                     pass 
-                    self._state.following.append(self.FOLLOW_arg_in_args346)
+                    self._state.following.append(self.FOLLOW_arg_in_args357)
                     arg25 = self.arg()
 
                     self._state.following.pop()
                     if self._state.backtracking == 0:
                         stream_arg.add(arg25.tree)
-                    # gleampython/gleam.g:58:27: ( ',' arg )*
+                    # gleampython/gleam.g:59:27: ( ',' arg )*
                     while True: #loop11
                         alt11 = 2
                         LA11_0 = self.input.LA(1)
 
-                        if (LA11_0 == 35) :
+                        if (LA11_0 == 36) :
                             alt11 = 1
 
 
                         if alt11 == 1:
-                            # gleampython/gleam.g:58:28: ',' arg
+                            # gleampython/gleam.g:59:28: ',' arg
                             pass 
-                            char_literal26=self.match(self.input, 35, self.FOLLOW_35_in_args349) 
+                            char_literal26=self.match(self.input, 36, self.FOLLOW_36_in_args360) 
                             if self._state.backtracking == 0:
-                                stream_35.add(char_literal26)
-                            self._state.following.append(self.FOLLOW_arg_in_args351)
+                                stream_36.add(char_literal26)
+                            self._state.following.append(self.FOLLOW_arg_in_args362)
                             arg27 = self.arg()
 
                             self._state.following.pop()
@@ -1141,7 +1149,7 @@ class gleamParser(Parser):
 
 
 
-                RPAREN28=self.match(self.input, RPAREN, self.FOLLOW_RPAREN_in_args357) 
+                RPAREN28=self.match(self.input, RPAREN, self.FOLLOW_RPAREN_in_args368) 
                 if self._state.backtracking == 0:
                     stream_RPAREN.add(RPAREN28)
 
@@ -1163,12 +1171,12 @@ class gleamParser(Parser):
 
 
                     root_0 = self._adaptor.nil()
-                    # 58:47: -> ^( ARGS[$lparen] ( arg )* )
-                    # gleampython/gleam.g:58:50: ^( ARGS[$lparen] ( arg )* )
+                    # 59:47: -> ^( ARGS[$lparen] ( arg )* )
+                    # gleampython/gleam.g:59:50: ^( ARGS[$lparen] ( arg )* )
                     root_1 = self._adaptor.nil()
                     root_1 = self._adaptor.becomeRoot(self._adaptor.create(ARGS, lparen), root_1)
 
-                    # gleampython/gleam.g:58:66: ( arg )*
+                    # gleampython/gleam.g:59:66: ( arg )*
                     while stream_arg.hasNext():
                         self._adaptor.addChild(root_1, stream_arg.nextTree())
 
@@ -1215,7 +1223,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "arg"
-    # gleampython/gleam.g:59:1: arg : IDENTIFIER EQUALS expr -> ^( IDENTIFIER expr ) ;
+    # gleampython/gleam.g:60:1: arg : IDENTIFIER EQUALS expr -> ^( IDENTIFIER expr ) ;
     def arg(self, ):
 
         retval = self.arg_return()
@@ -1241,16 +1249,16 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:59:5: ( IDENTIFIER EQUALS expr -> ^( IDENTIFIER expr ) )
-                # gleampython/gleam.g:59:7: IDENTIFIER EQUALS expr
+                # gleampython/gleam.g:60:5: ( IDENTIFIER EQUALS expr -> ^( IDENTIFIER expr ) )
+                # gleampython/gleam.g:60:7: IDENTIFIER EQUALS expr
                 pass 
-                IDENTIFIER29=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_arg374) 
+                IDENTIFIER29=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_arg385) 
                 if self._state.backtracking == 0:
                     stream_IDENTIFIER.add(IDENTIFIER29)
-                EQUALS30=self.match(self.input, EQUALS, self.FOLLOW_EQUALS_in_arg376) 
+                EQUALS30=self.match(self.input, EQUALS, self.FOLLOW_EQUALS_in_arg387) 
                 if self._state.backtracking == 0:
                     stream_EQUALS.add(EQUALS30)
-                self._state.following.append(self.FOLLOW_expr_in_arg378)
+                self._state.following.append(self.FOLLOW_expr_in_arg389)
                 expr31 = self.expr()
 
                 self._state.following.pop()
@@ -1258,7 +1266,7 @@ class gleamParser(Parser):
                     stream_expr.add(expr31.tree)
 
                 # AST Rewrite
-                # elements: expr, IDENTIFIER
+                # elements: IDENTIFIER, expr
                 # token labels: 
                 # rule labels: retval
                 # token list labels: 
@@ -1275,8 +1283,8 @@ class gleamParser(Parser):
 
 
                     root_0 = self._adaptor.nil()
-                    # 59:30: -> ^( IDENTIFIER expr )
-                    # gleampython/gleam.g:59:33: ^( IDENTIFIER expr )
+                    # 60:30: -> ^( IDENTIFIER expr )
+                    # gleampython/gleam.g:60:33: ^( IDENTIFIER expr )
                     root_1 = self._adaptor.nil()
                     root_1 = self._adaptor.becomeRoot(stream_IDENTIFIER.nextNode(), root_1)
 
@@ -1322,7 +1330,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "expr"
-    # gleampython/gleam.g:60:1: expr : ( STRINGLITERAL | NUMBER | IDENTIFIER | block );
+    # gleampython/gleam.g:61:1: expr : ( STRINGLITERAL | NUMBER | IDENTIFIER | block );
     def expr(self, ):
 
         retval = self.expr_return()
@@ -1348,7 +1356,7 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:60:6: ( STRINGLITERAL | NUMBER | IDENTIFIER | block )
+                # gleampython/gleam.g:61:6: ( STRINGLITERAL | NUMBER | IDENTIFIER | block )
                 alt13 = 4
                 LA13 = self.input.LA(1)
                 if LA13 == STRINGLITERAL:
@@ -1368,11 +1376,11 @@ class gleamParser(Parser):
                     raise nvae
 
                 if alt13 == 1:
-                    # gleampython/gleam.g:60:8: STRINGLITERAL
+                    # gleampython/gleam.g:61:8: STRINGLITERAL
                     pass 
                     root_0 = self._adaptor.nil()
 
-                    STRINGLITERAL32=self.match(self.input, STRINGLITERAL, self.FOLLOW_STRINGLITERAL_in_expr393)
+                    STRINGLITERAL32=self.match(self.input, STRINGLITERAL, self.FOLLOW_STRINGLITERAL_in_expr404)
                     if self._state.backtracking == 0:
 
                         STRINGLITERAL32_tree = self._adaptor.createWithPayload(STRINGLITERAL32)
@@ -1381,11 +1389,11 @@ class gleamParser(Parser):
 
 
                 elif alt13 == 2:
-                    # gleampython/gleam.g:60:24: NUMBER
+                    # gleampython/gleam.g:61:24: NUMBER
                     pass 
                     root_0 = self._adaptor.nil()
 
-                    NUMBER33=self.match(self.input, NUMBER, self.FOLLOW_NUMBER_in_expr397)
+                    NUMBER33=self.match(self.input, NUMBER, self.FOLLOW_NUMBER_in_expr408)
                     if self._state.backtracking == 0:
 
                         NUMBER33_tree = self._adaptor.createWithPayload(NUMBER33)
@@ -1394,11 +1402,11 @@ class gleamParser(Parser):
 
 
                 elif alt13 == 3:
-                    # gleampython/gleam.g:60:33: IDENTIFIER
+                    # gleampython/gleam.g:61:33: IDENTIFIER
                     pass 
                     root_0 = self._adaptor.nil()
 
-                    IDENTIFIER34=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_expr401)
+                    IDENTIFIER34=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_expr412)
                     if self._state.backtracking == 0:
 
                         IDENTIFIER34_tree = self._adaptor.createWithPayload(IDENTIFIER34)
@@ -1407,11 +1415,11 @@ class gleamParser(Parser):
 
 
                 elif alt13 == 4:
-                    # gleampython/gleam.g:60:46: block
+                    # gleampython/gleam.g:61:46: block
                     pass 
                     root_0 = self._adaptor.nil()
 
-                    self._state.following.append(self.FOLLOW_block_in_expr405)
+                    self._state.following.append(self.FOLLOW_block_in_expr416)
                     block35 = self.block()
 
                     self._state.following.pop()
@@ -1451,7 +1459,7 @@ class gleamParser(Parser):
 
 
     # $ANTLR start "for_expr"
-    # gleampython/gleam.g:61:1: for_expr : FOR IDENTIFIER IN IDENTIFIER block ;
+    # gleampython/gleam.g:62:1: for_expr : FOR IDENTIFIER IN IDENTIFIER block ;
     def for_expr(self, ):
 
         retval = self.for_expr_return()
@@ -1479,36 +1487,36 @@ class gleamParser(Parser):
                     success = True
                     return retval
 
-                # gleampython/gleam.g:61:10: ( FOR IDENTIFIER IN IDENTIFIER block )
-                # gleampython/gleam.g:61:12: FOR IDENTIFIER IN IDENTIFIER block
+                # gleampython/gleam.g:62:10: ( FOR IDENTIFIER IN IDENTIFIER block )
+                # gleampython/gleam.g:62:12: FOR IDENTIFIER IN IDENTIFIER block
                 pass 
                 root_0 = self._adaptor.nil()
 
-                FOR36=self.match(self.input, FOR, self.FOLLOW_FOR_in_for_expr412)
+                FOR36=self.match(self.input, FOR, self.FOLLOW_FOR_in_for_expr423)
                 if self._state.backtracking == 0:
 
                     FOR36_tree = self._adaptor.createWithPayload(FOR36)
                     self._adaptor.addChild(root_0, FOR36_tree)
 
-                IDENTIFIER37=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_for_expr414)
+                IDENTIFIER37=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_for_expr425)
                 if self._state.backtracking == 0:
 
                     IDENTIFIER37_tree = self._adaptor.createWithPayload(IDENTIFIER37)
                     self._adaptor.addChild(root_0, IDENTIFIER37_tree)
 
-                IN38=self.match(self.input, IN, self.FOLLOW_IN_in_for_expr416)
+                IN38=self.match(self.input, IN, self.FOLLOW_IN_in_for_expr427)
                 if self._state.backtracking == 0:
 
                     IN38_tree = self._adaptor.createWithPayload(IN38)
                     self._adaptor.addChild(root_0, IN38_tree)
 
-                IDENTIFIER39=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_for_expr418)
+                IDENTIFIER39=self.match(self.input, IDENTIFIER, self.FOLLOW_IDENTIFIER_in_for_expr429)
                 if self._state.backtracking == 0:
 
                     IDENTIFIER39_tree = self._adaptor.createWithPayload(IDENTIFIER39)
                     self._adaptor.addChild(root_0, IDENTIFIER39_tree)
 
-                self._state.following.append(self.FOLLOW_block_in_for_expr420)
+                self._state.following.append(self.FOLLOW_block_in_for_expr431)
                 block40 = self.block()
 
                 self._state.following.pop()
@@ -1541,10 +1549,10 @@ class gleamParser(Parser):
 
     # $ANTLR start "synpred8_gleam"
     def synpred8_gleam_fragment(self, ):
-        # gleampython/gleam.g:54:30: ( expr )
-        # gleampython/gleam.g:54:30: expr
+        # gleampython/gleam.g:55:30: ( expr )
+        # gleampython/gleam.g:55:30: expr
         pass 
-        self._state.following.append(self.FOLLOW_expr_in_synpred8_gleam277)
+        self._state.following.append(self.FOLLOW_expr_in_synpred8_gleam288)
         self.expr()
 
         self._state.following.pop()
@@ -1556,10 +1564,10 @@ class gleamParser(Parser):
 
     # $ANTLR start "synpred11_gleam"
     def synpred11_gleam_fragment(self, ):
-        # gleampython/gleam.g:57:25: ( expr )
-        # gleampython/gleam.g:57:25: expr
+        # gleampython/gleam.g:58:25: ( expr )
+        # gleampython/gleam.g:58:25: expr
         pass 
-        self._state.following.append(self.FOLLOW_expr_in_synpred11_gleam319)
+        self._state.following.append(self.FOLLOW_expr_in_synpred11_gleam330)
         self.expr()
 
         self._state.following.pop()
@@ -1602,51 +1610,51 @@ class gleamParser(Parser):
 
  
 
-    FOLLOW_stmt_in_prog142 = frozenset([1, 13, 14, 19])
-    FOLLOW_MACRO_in_macro159 = frozenset([14])
-    FOLLOW_IDENTIFIER_in_macro161 = frozenset([15])
-    FOLLOW_LPAREN_in_macro165 = frozenset([14, 16])
-    FOLLOW_param_in_macro168 = frozenset([16, 35])
-    FOLLOW_35_in_macro171 = frozenset([14])
-    FOLLOW_param_in_macro173 = frozenset([16, 35])
-    FOLLOW_RPAREN_in_macro179 = frozenset([14, 17])
-    FOLLOW_IDENTIFIER_in_macro183 = frozenset([14, 17])
-    FOLLOW_block_in_macro186 = frozenset([1])
-    FOLLOW_IDENTIFIER_in_param222 = frozenset([1])
-    FOLLOW_LPAREN_in_parameters229 = frozenset([14])
-    FOLLOW_IDENTIFIER_in_parameters231 = frozenset([16])
-    FOLLOW_RPAREN_in_parameters233 = frozenset([1])
-    FOLLOW_LBRACE_in_block240 = frozenset([13, 14, 18, 19])
-    FOLLOW_stmt_in_block242 = frozenset([13, 14, 18, 19])
-    FOLLOW_RBRACE_in_block245 = frozenset([1])
-    FOLLOW_macro_in_stmt261 = frozenset([1])
-    FOLLOW_NODE_in_stmt270 = frozenset([14])
-    FOLLOW_IDENTIFIER_in_stmt272 = frozenset([1, 14, 15, 17, 21, 22])
-    FOLLOW_args_in_stmt274 = frozenset([1, 14, 17, 21, 22])
-    FOLLOW_expr_in_stmt277 = frozenset([1])
-    FOLLOW_call_in_stmt301 = frozenset([1])
-    FOLLOW_IDENTIFIER_in_call314 = frozenset([1, 14, 15, 17, 21, 22])
-    FOLLOW_args_in_call316 = frozenset([1, 14, 17, 21, 22])
-    FOLLOW_expr_in_call319 = frozenset([1])
-    FOLLOW_LPAREN_in_args343 = frozenset([14, 16])
-    FOLLOW_arg_in_args346 = frozenset([16, 35])
-    FOLLOW_35_in_args349 = frozenset([14])
-    FOLLOW_arg_in_args351 = frozenset([16, 35])
-    FOLLOW_RPAREN_in_args357 = frozenset([1])
-    FOLLOW_IDENTIFIER_in_arg374 = frozenset([20])
-    FOLLOW_EQUALS_in_arg376 = frozenset([14, 17, 21, 22])
-    FOLLOW_expr_in_arg378 = frozenset([1])
-    FOLLOW_STRINGLITERAL_in_expr393 = frozenset([1])
-    FOLLOW_NUMBER_in_expr397 = frozenset([1])
-    FOLLOW_IDENTIFIER_in_expr401 = frozenset([1])
-    FOLLOW_block_in_expr405 = frozenset([1])
-    FOLLOW_FOR_in_for_expr412 = frozenset([14])
-    FOLLOW_IDENTIFIER_in_for_expr414 = frozenset([24])
-    FOLLOW_IN_in_for_expr416 = frozenset([14])
-    FOLLOW_IDENTIFIER_in_for_expr418 = frozenset([14, 17])
-    FOLLOW_block_in_for_expr420 = frozenset([1])
-    FOLLOW_expr_in_synpred8_gleam277 = frozenset([1])
-    FOLLOW_expr_in_synpred11_gleam319 = frozenset([1])
+    FOLLOW_stmt_in_prog149 = frozenset([1, 14, 15, 20])
+    FOLLOW_MACRO_in_macro166 = frozenset([15])
+    FOLLOW_IDENTIFIER_in_macro168 = frozenset([16])
+    FOLLOW_LPAREN_in_macro172 = frozenset([15, 17])
+    FOLLOW_param_in_macro175 = frozenset([17, 36])
+    FOLLOW_36_in_macro178 = frozenset([15])
+    FOLLOW_param_in_macro180 = frozenset([17, 36])
+    FOLLOW_RPAREN_in_macro186 = frozenset([15, 18])
+    FOLLOW_IDENTIFIER_in_macro190 = frozenset([15, 18])
+    FOLLOW_block_in_macro193 = frozenset([1])
+    FOLLOW_IDENTIFIER_in_param233 = frozenset([1])
+    FOLLOW_LPAREN_in_parameters240 = frozenset([15])
+    FOLLOW_IDENTIFIER_in_parameters242 = frozenset([17])
+    FOLLOW_RPAREN_in_parameters244 = frozenset([1])
+    FOLLOW_LBRACE_in_block251 = frozenset([14, 15, 19, 20])
+    FOLLOW_stmt_in_block253 = frozenset([14, 15, 19, 20])
+    FOLLOW_RBRACE_in_block256 = frozenset([1])
+    FOLLOW_macro_in_stmt272 = frozenset([1])
+    FOLLOW_NODE_in_stmt281 = frozenset([15])
+    FOLLOW_IDENTIFIER_in_stmt283 = frozenset([1, 15, 16, 18, 22, 23])
+    FOLLOW_args_in_stmt285 = frozenset([1, 15, 18, 22, 23])
+    FOLLOW_expr_in_stmt288 = frozenset([1])
+    FOLLOW_call_in_stmt312 = frozenset([1])
+    FOLLOW_IDENTIFIER_in_call325 = frozenset([1, 15, 16, 18, 22, 23])
+    FOLLOW_args_in_call327 = frozenset([1, 15, 18, 22, 23])
+    FOLLOW_expr_in_call330 = frozenset([1])
+    FOLLOW_LPAREN_in_args354 = frozenset([15, 17])
+    FOLLOW_arg_in_args357 = frozenset([17, 36])
+    FOLLOW_36_in_args360 = frozenset([15])
+    FOLLOW_arg_in_args362 = frozenset([17, 36])
+    FOLLOW_RPAREN_in_args368 = frozenset([1])
+    FOLLOW_IDENTIFIER_in_arg385 = frozenset([21])
+    FOLLOW_EQUALS_in_arg387 = frozenset([15, 18, 22, 23])
+    FOLLOW_expr_in_arg389 = frozenset([1])
+    FOLLOW_STRINGLITERAL_in_expr404 = frozenset([1])
+    FOLLOW_NUMBER_in_expr408 = frozenset([1])
+    FOLLOW_IDENTIFIER_in_expr412 = frozenset([1])
+    FOLLOW_block_in_expr416 = frozenset([1])
+    FOLLOW_FOR_in_for_expr423 = frozenset([15])
+    FOLLOW_IDENTIFIER_in_for_expr425 = frozenset([25])
+    FOLLOW_IN_in_for_expr427 = frozenset([15])
+    FOLLOW_IDENTIFIER_in_for_expr429 = frozenset([15, 18])
+    FOLLOW_block_in_for_expr431 = frozenset([1])
+    FOLLOW_expr_in_synpred8_gleam288 = frozenset([1])
+    FOLLOW_expr_in_synpred11_gleam330 = frozenset([1])
 
 
 

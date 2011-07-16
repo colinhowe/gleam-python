@@ -13,6 +13,7 @@ tokens {
     PARAMS;
     BLOCK;
     CALL;
+    VALUE;
 	PLUS 	= '+' ;
 	MINUS	= '-' ;
 	MULT	= '*' ;
@@ -46,7 +47,7 @@ def main(argv, otherArg=None):
 
 prog : stmt* -> ^(PROG stmt*);
 macro : MACRO IDENTIFIER lparen='(' (param (',' param)*)? ')' value=IDENTIFIER? block 
-      -> ^(MACRO IDENTIFIER ^(PARAMS[$lparen] param*) $value? block);
+      -> ^(MACRO IDENTIFIER ^(PARAMS[$lparen] param*) ^(VALUE $value?) block);
 param : IDENTIFIER;
 parameters : LPAREN IDENTIFIER RPAREN;
 block : LBRACE stmt* RBRACE -> ^(BLOCK stmt*);

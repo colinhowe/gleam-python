@@ -61,6 +61,17 @@ class TestBasicNode(TestCase):
             gleam.macros.form({"class": "class"}, "hello")
         """)
 
+    def test_valueless_macro(self):
+        self.check_python("""
+            macro br() {
+                node br()
+            }
+        """, """
+            def br(args):
+                gleam.makeNode("br", {}, None)
+            gleam.addMacro("br", br)
+        """)
+
     def test_define_and_invoke_macro_with_block(self):
         self.check_python("""
             macro form(class) value {

@@ -85,7 +85,7 @@ class ToPythonTraverser(object):
     def MACRO(self, node):
         macro_name_node = node.children.pop(0)
         macro_name = macro_name_node.text
-        function_boiler_plate = """def %s(args, %s):
+        function_boiler_plate = """def %s(args%s):
 %s
 %s
 """
@@ -96,7 +96,11 @@ class ToPythonTraverser(object):
         ])
         arg_extracts = _indent(arg_extracts)
         value_node = node.children.pop(0)
-        value_name = value_node.text
+        if value_node.children:
+            value_node = value_node.children.pop(0)
+            value_name = ", " + value_node.text
+        else:
+            value_name = ""
         macro_code = _indent(self._to_python(node.children.pop(0), node))
             
         function_code = function_boiler_plate % (
