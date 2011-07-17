@@ -23,8 +23,6 @@ class TestPythonTarget(TestCase):
 
         python = gleam.to_python(response.tree, debug=True)
         python = self.deindent(python)
-        # Strip the first line - its just an import
-        python = '\n'.join(python.split('\n')[1:])
 
         expected_python = self.deindent(expected_python)
         if expected_python != python:

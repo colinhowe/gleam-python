@@ -117,6 +117,21 @@ class TestBasicNode(TestCase):
              EMPTY_EXPR
         """)
 
+    def test_two_valueless_calls(self):
+        self.check_parse("""
+            br()
+            br()
+        """, """
+            CALL
+             IDENTIFIER
+             ARGS
+             EMPTY_EXPR
+            CALL
+             IDENTIFIER
+             ARGS
+             EMPTY_EXPR
+        """)
+
     def test_macro_defn_and_invoke(self):
         self.check_parse("""
             macro form(class) value {

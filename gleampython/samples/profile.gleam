@@ -12,3 +12,4 @@ macro profile(name, age) {
 }
 
 profile(name='Colin', age=26)
+profile(name='Holly', age=24)

@@ -120,15 +120,21 @@ class ToPythonTraverser(object):
             result, value = self.BLOCK(node.children[2])
         else:
             value = self._to_python(node.children[2])
-        result += 'gleam.macros.%s(%s, %s)' % (
-            name_node.text, args, value)
+
+        if node.children[2].type == gleamParser.EMPTY_EXPR:
+            result += 'gleam.macros.%s(%s)' % (
+                name_node.text, args)
+        else:
+            result += 'gleam.macros.%s(%s, %s)' % (
+                name_node.text, args, value)
+
         return result
 
     def NUMBER(self, node):
         return node.text
 
     def PROG(self, node):
-        return 'from python_runner import gleam\n' + '\n'.join([
+        return '\n'.join([
             self._to_python(child)
             for child in node.children
         ])

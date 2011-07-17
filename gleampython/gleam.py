@@ -106,12 +106,14 @@ class ToJsTraverser(object):
         name_node = node.children[0]
         args = '{}'
         value = 'null';
-        if len(node.children) > 0 and node.children[1].type == gleamParser.ARGS:
-            args = self._to_js(node.children[1])
-        if len(node.children) > 1:
-            value = self._to_js(node.children[2])
-        return '$gleam.macros.%s(%s, %s);' % (
-            name_node.text, args, value)
+        args = self._to_js(node.children[1])
+        value = self._to_js(node.children[2])
+        if node.children[2].type == gleamParser.EMPTY_EXPR:
+            return '$gleam.macros.%s(%s);' % (
+                name_node.text, args)
+        else:
+            return '$gleam.macros.%s(%s, %s);' % (
+                name_node.text, args, value)
 
     def PROG(self, node):
         return '\n'.join([

@@ -3,6 +3,7 @@ from os import curdir, sep
 import time
 
 import gleam_compiler
+import to_html
 
 class MyHandler(BaseHTTPRequestHandler):
 
@@ -28,20 +29,20 @@ class MyHandler(BaseHTTPRequestHandler):
 
         # Run it
         #
-        f = file('samples/gleam_profile.py')
-        src = f.read()
-        f.close()
-        code = compile(src, 'gleam_profile.py', 'exec')
-        ns = {}
-        exec(code) in ns
-        print ns
-        
+        import python_runner
+        gleam = python_runner.Runner()
+        execfile('samples/gleam_profile.py', {'gleam': gleam}, {})
 
         # Serve the HTML
         #
+        print gleam
+        result = to_html.HtmlCreator().as_html(gleam.nodes)
+        result = '<pre>%s</pre>' % result
+
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
+        self.wfile.write(result)
         return
 
 def main():

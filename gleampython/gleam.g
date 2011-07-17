@@ -29,6 +29,20 @@ import traceback
 from gleamLexer import gleamLexer
 }
 
+@members {
+    def no_newline_before_next_token(self):
+        index = self.input.LB(1).getTokenIndex()
+        while (self.input.size() > (index + 1)):
+            index += 1
+            tkn = self.input.get(index)
+            if tkn.getChannel() != DEFAULT_CHANNEL:
+                if tkn.getType() == NL:
+                    return False
+            else:
+                break
+        return True
+}
+
 @main {
 def main(argv, otherArg=None):
   char_stream = ANTLRFileStream(sys.argv[1])
@@ -42,6 +56,7 @@ def main(argv, otherArg=None):
 	traceback.print_stack()
   return parser, lexer
 }
+
 
 /*------------------------------------------------------------------
  * PARSER RULES
@@ -57,10 +72,16 @@ param : IDENTIFIER;
 parameters : LPAREN IDENTIFIER RPAREN;
 block : LBRACE stmt* RBRACE -> ^(BLOCK stmt*);
 stmt : macro
-     | NODE IDENTIFIER args expr -> ^(NODE IDENTIFIER args expr)
+     | NODE IDENTIFIER a=args { self.no_newline_before_next_token() }?=> expr 
+       -> ^(NODE IDENTIFIER $a expr)
+     | NODE IDENTIFIER a=args 
+       -> ^(NODE IDENTIFIER $a EMPTY_EXPR)
      | call
      ;
-call : IDENTIFIER args expr -> ^(CALL IDENTIFIER args expr);
+call : IDENTIFIER a=args { self.no_newline_before_next_token() }?=> expr 
+       -> ^(CALL IDENTIFIER $a expr)
+     | IDENTIFIER a=args 
+       -> ^(CALL IDENTIFIER $a EMPTY_EXPR);
 args : 
     () -> ^(ARGS)
     | lparen=LPAREN (arg (',' arg)*)? RPAREN -> ^(ARGS arg*);
@@ -108,7 +129,8 @@ UnicodeEscape
     :   '\\' 'u' HexDigit HexDigit HexDigit HexDigit
     ;
 
-WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ 	{ $channel = HIDDEN; } ;
+NL           :               ('\n' | '\r') {$channel=HIDDEN;} ;
+WHITESPACE : ( '\t' | ' ' | '\u000C' )+ 	{ $channel = HIDDEN; } ;
 
 
 COMMENT
