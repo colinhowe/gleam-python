@@ -7,7 +7,7 @@ from gleamLexer import gleamLexer
 from gleamParser import gleamParser
 
 
-class TestBasicNode(TestCase):
+class TestPythonTarget(TestCase):
     def deindent(self, text):
         lines = [line for line in text.split('\n') if line.strip() != '']
         start_indent = len(lines[0]) - len(lines[0].lstrip())

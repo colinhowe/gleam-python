@@ -13,7 +13,9 @@ tokens {
     PARAMS;
     BLOCK;
     CALL;
-    VALUE;
+    EXPR;
+    EMPTY_EXPR;
+    EMPTY_VALUE;
 	PLUS 	= '+' ;
 	MINUS	= '-' ;
 	MULT	= '*' ;
@@ -46,19 +48,26 @@ def main(argv, otherArg=None):
  *------------------------------------------------------------------*/
 
 prog : stmt* -> ^(PROG stmt*);
-macro : MACRO IDENTIFIER lparen='(' (param (',' param)*)? ')' value=IDENTIFIER? block 
-      -> ^(MACRO IDENTIFIER ^(PARAMS[$lparen] param*) ^(VALUE $value?) block);
+macro : MACRO IDENTIFIER lparen='(' (param (',' param)*)? ')' value block 
+      -> ^(MACRO IDENTIFIER ^(PARAMS[$lparen] param*) value block);
+value :
+    IDENTIFIER 
+    | () -> EMPTY_VALUE ;
 param : IDENTIFIER;
 parameters : LPAREN IDENTIFIER RPAREN;
 block : LBRACE stmt* RBRACE -> ^(BLOCK stmt*);
 stmt : macro
-     | NODE IDENTIFIER args? expr? -> ^(NODE IDENTIFIER args? expr?)
+     | NODE IDENTIFIER args expr -> ^(NODE IDENTIFIER args expr)
      | call
      ;
-call : IDENTIFIER args? expr? -> ^(CALL IDENTIFIER args? expr?);
-args : lparen=LPAREN (arg (',' arg)*)? RPAREN -> ^(ARGS[$lparen] arg*);
+call : IDENTIFIER args expr -> ^(CALL IDENTIFIER args expr);
+args : 
+    () -> ^(ARGS)
+    | lparen=LPAREN (arg (',' arg)*)? RPAREN -> ^(ARGS arg*);
 arg : IDENTIFIER EQUALS expr -> ^(IDENTIFIER expr);
-expr : STRINGLITERAL | NUMBER | IDENTIFIER | block;
+expr :
+    STRINGLITERAL | NUMBER | IDENTIFIER | block
+    | () -> EMPTY_EXPR;
 for_expr : FOR IDENTIFIER IN IDENTIFIER block;
 
 

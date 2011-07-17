@@ -59,12 +59,12 @@ class ToJsTraverser(object):
 
     def NODE(self, node):
         args = '{}'
-        name = self._to_js(node.children.pop(0), context=node)
+        name = self._to_js(node.children[0], context=node)
         value = 'null';
-        if node.children and node.children[0].type == gleamParser.ARGS:
-            args = self._to_js(node.children.pop(0))
-        if node.children:
-            value = self._to_js(node.children.pop(0))
+        if len(node.children) > 0 and node.children[1].type == gleamParser.ARGS:
+            args = self._to_js(node.children[1])
+        if len(node.children) > 1:
+            value = self._to_js(node.children[2])
 
         return '$gleam.makeNode(%s, %s, %s);' % (name, args, value)
 
@@ -75,21 +75,21 @@ class ToJsTraverser(object):
         ])
 
     def MACRO(self, node):
-        macro_name_node = node.children.pop(0)
+        macro_name_node = node.children[0]
         function_boiler_plate = """function(args, %s) {
 %s
 %s
 }"""
-        params_node = node.children.pop(0)
+        params_node = node.children[1]
         arg_extracts = '\n'.join([
             'var %s = args["%s"];' % (param_node.text, param_node.text)
             for param_node in params_node.children
         ])
-        value_node = node.children.pop(0)
+        value_node = node.children[2]
         if value_node.children:
-            value_node = value_node.children.pop(0)
+            value_node = value_node.children[0]
         value_name = value_node.text
-        macro_code = self._to_js(node.children.pop(0), node)
+        macro_code = self._to_js(node.children[3], node)
             
         function_code = function_boiler_plate % (
                 value_name, _indent(arg_extracts), _indent(macro_code))
@@ -97,13 +97,13 @@ class ToJsTraverser(object):
             macro_name_node.text, function_code)
 
     def CALL(self, node):
-        name_node = node.children.pop(0)
+        name_node = node.children[0]
         args = '{}'
         value = 'null';
-        if node.children and node.children[0].type == gleamParser.ARGS:
-            args = self._to_js(node.children.pop(0))
-        if node.children:
-            value = self._to_js(node.children.pop(0))
+        if len(node.children) > 0 and node.children[1].type == gleamParser.ARGS:
+            args = self._to_js(node.children[1])
+        if len(node.children) > 1:
+            value = self._to_js(node.children[2])
         return '$gleam.macros.%s(%s, %s);' % (
             name_node.text, args, value)
 

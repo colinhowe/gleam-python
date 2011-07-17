@@ -77,8 +77,7 @@ class TestBasicNode(TestCase):
              PARAMS
               IDENTIFIER
               IDENTIFIER
-             VALUE
-              IDENTIFIER
+             IDENTIFIER
              BLOCK
               NODE
                IDENTIFIER
@@ -110,8 +109,12 @@ class TestBasicNode(TestCase):
         """, """
             NODE
              IDENTIFIER
+             ARGS
+             EMPTY_EXPR
             NODE
              IDENTIFIER
+             ARGS
+             EMPTY_EXPR
         """)
 
     def test_macro_defn_and_invoke(self):
@@ -128,11 +131,11 @@ class TestBasicNode(TestCase):
              IDENTIFIER
              PARAMS
               IDENTIFIER
-             VALUE
-              IDENTIFIER
+             IDENTIFIER
              BLOCK
               NODE
                IDENTIFIER
+               ARGS
                IDENTIFIER
             CALL
              IDENTIFIER
@@ -142,4 +145,6 @@ class TestBasicNode(TestCase):
              BLOCK
               NODE
                IDENTIFIER
+               ARGS
+               EMPTY_EXPR
         """)

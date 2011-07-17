@@ -59,19 +59,20 @@ class ToPythonTraverser(object):
 %s
 """ % (block_name, _indent(code)), block_name
 
+    def EMPTY_EXPR(self, node):
+        return "None"
+
     def NODE(self, node):
         # TODO Could be merged with CALL
         args = '{}'
-        name = self._to_python(node.children.pop(0), context=node)
+        name = self._to_python(node.children[0], context=node)
         value = 'None';
         result = ''
-        if node.children and node.children[0].type == gleamParser.ARGS:
-            args = self._to_python(node.children.pop(0))
-        if node.children:
-            if node.children[0].type == gleamParser.BLOCK:
-                result, value = self.BLOCK(node.children.pop(0))
-            else:
-                value = self._to_python(node.children.pop(0))
+        args = self._to_python(node.children[1])
+        if node.children[2].type == gleamParser.BLOCK:
+            result, value = self.BLOCK(node.children[2])
+        else:
+            value = self._to_python(node.children[2])
         
         result += 'gleam.makeNode(%s, %s, %s)' % (name, args, value)
         return result
@@ -83,25 +84,24 @@ class ToPythonTraverser(object):
         ])
 
     def MACRO(self, node):
-        macro_name_node = node.children.pop(0)
+        macro_name_node = node.children[0]
         macro_name = macro_name_node.text
         function_boiler_plate = """def %s(args%s):
 %s
 %s
 """
-        params_node = node.children.pop(0)
+        params_node = node.children[1]
         arg_extracts = '\n'.join([
             '%s = args["%s"]' % (param_node.text, param_node.text)
             for param_node in params_node.children
         ])
         arg_extracts = _indent(arg_extracts)
-        value_node = node.children.pop(0)
-        if value_node.children:
-            value_node = value_node.children.pop(0)
-            value_name = ", " + value_node.text
-        else:
+        value_node = node.children[2]
+        if value_node.type == gleamParser.EMPTY_VALUE:
             value_name = ""
-        macro_code = _indent(self._to_python(node.children.pop(0), node))
+        else:
+            value_name = ", " + value_node.text
+        macro_code = _indent(self._to_python(node.children[3], node))
             
         function_code = function_boiler_plate % (
                 macro_name, value_name, arg_extracts, macro_code)
@@ -111,17 +111,15 @@ class ToPythonTraverser(object):
         # TODO Macros shouldn't need adding to a central repo
 
     def CALL(self, node):
-        name_node = node.children.pop(0)
+        name_node = node.children[0]
         args = '{}'
         value = 'None';
         result = ''
-        if node.children and node.children[0].type == gleamParser.ARGS:
-            args = self._to_python(node.children.pop(0))
-        if node.children:
-            if node.children[0].type == gleamParser.BLOCK:
-                result, value = self.BLOCK(node.children.pop(0))
-            else:
-                value = self._to_python(node.children.pop(0))
+        args = self._to_python(node.children[1])
+        if node.children[2].type == gleamParser.BLOCK:
+            result, value = self.BLOCK(node.children[2])
+        else:
+            value = self._to_python(node.children[2])
         result += 'gleam.macros.%s(%s, %s)' % (
             name_node.text, args, value)
         return result
