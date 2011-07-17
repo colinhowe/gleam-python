@@ -2,6 +2,9 @@ import gleamParser
 from gleamParser import gleamParser as parser
 from python_target import to_python
 
+def _indent(text):
+    return "\n".join(["    " + line for line in text.split("\n")])
+
 class ToJsTraverser(object):
     def __init__(self, debug=False):
         self.debug = debug
@@ -51,8 +54,8 @@ class ToJsTraverser(object):
             for stmt in node.children
         ])
         return """function() {
-    %s
-}""" % code
+%s
+}""" % _indent(code)
 
     def NODE(self, node):
         args = '{}'
@@ -74,8 +77,8 @@ class ToJsTraverser(object):
     def MACRO(self, node):
         macro_name_node = node.children.pop(0)
         function_boiler_plate = """function(args, %s) {
-    %s
-    %s
+%s
+%s
 }"""
         params_node = node.children.pop(0)
         arg_extracts = '\n'.join([
@@ -88,7 +91,8 @@ class ToJsTraverser(object):
         value_name = value_node.text
         macro_code = self._to_js(node.children.pop(0), node)
             
-        function_code = function_boiler_plate % (value_name, arg_extracts, macro_code)
+        function_code = function_boiler_plate % (
+                value_name, _indent(arg_extracts), _indent(macro_code))
         return '$gleam.addMacro("%s", %s);' % (
             macro_name_node.text, function_code)
 
