@@ -23,6 +23,9 @@ class TestPythonTarget(TestCase):
 
         python = gleam.to_python(response.tree, debug=True)
         python = self.deindent(python)
+        # Strip the first line - its just an import
+        python = '\n'.join(python.split('\n')[1:])
+
         expected_python = self.deindent(expected_python)
         if expected_python != python:
             print 'Expected:'
@@ -43,6 +46,13 @@ class TestPythonTarget(TestCase):
             node form(class="clazz", name="Bob") "text"
         """, """
             gleam.makeNode("form", {"class": "clazz", "name": "Bob"}, "text")
+        """)
+
+    def test_numeric_value(self):
+        self.check_python("""
+            node span 5
+        """, """
+            gleam.makeNode("span", {}, 5)
         """)
 
     def test_define_and_invoke_macro_with_simple_value(self):

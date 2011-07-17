@@ -15,4 +15,7 @@ class Runner(dict):
             node['value'] = value
         self.current_node.pop()
 
+    def addMacro(*args, **kwargs):
+        print 'Adding macro %s %s' % (args, kwargs)
+
 gleam = Runner()

@@ -24,10 +24,17 @@ class MyHandler(BaseHTTPRequestHandler):
 
         # Compile the gleam file
         #
-        gleam_compiler.compile_gleam('samples/profile.g', 'samples/gleam_profile.js', 'samples/gleam_profile.py')
+        gleam_compiler.compile_gleam('samples/profile.gleam', 'samples/gleam_profile.js', 'samples/gleam_profile.py')
 
         # Run it
         #
+        f = file('samples/gleam_profile.py')
+        src = f.read()
+        f.close()
+        code = compile(src, 'gleam_profile.py', 'exec')
+        ns = {}
+        exec(code) in ns
+        print ns
         
 
         # Serve the HTML

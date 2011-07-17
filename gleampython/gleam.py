@@ -48,6 +48,9 @@ class ToJsTraverser(object):
     def NODE__IDENTIFIER(self, node):
         return '"%s"' % node.text
 
+    def NUMBER(self, node):
+        return node.text
+
     def BLOCK(self, node):
         code = '\n'.join([
             self._to_js(stmt)

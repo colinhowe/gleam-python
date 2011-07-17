@@ -124,8 +124,11 @@ class ToPythonTraverser(object):
             name_node.text, args, value)
         return result
 
+    def NUMBER(self, node):
+        return node.text
+
     def PROG(self, node):
-        return '\n'.join([
+        return 'from python_runner import gleam\n' + '\n'.join([
             self._to_python(child)
             for child in node.children
         ])

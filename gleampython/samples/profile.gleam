@@ -11,9 +11,4 @@ macro profile(name, age) {
     }
 }
 
-node script(src='gleam_profile.js')
-
 profile(name='Colin', age=26)
-profile(name='Holly', age=22)
-
-node p(id="clickhere" onclick="alert(\"hello\"") "Click here to generate more profiles using JS"
