@@ -77,6 +77,9 @@ class ToJsTraverser(object):
             for stmt in node.children
         ])
 
+    def EMPTY_EXPR(self, node):
+        return 'null'
+
     def MACRO(self, node):
         macro_name_node = node.children[0]
         function_boiler_plate = """function(args, %s) {

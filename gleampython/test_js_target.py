@@ -52,6 +52,13 @@ class TestJsTarget(TestCase):
             $gleam.makeNode("span", {}, 5);
         """)
 
+    def test_valueless(self):
+        self.check_js("""
+            node span
+        """, """
+            $gleam.makeNode("span", {}, null);
+        """)
+
     def test_define_and_invoke_macro_with_simple_value(self):
         self.check_js("""
             macro form(class) value {
