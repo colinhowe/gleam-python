@@ -21,7 +21,7 @@ class TestJsTarget(TestCase):
         parser = gleamParser(tokens)
         response = parser.prog()
 
-        js = gleam.to_js(response.tree, debug=True)
+        js = gleam.to_js(response.tree, "view", debug=True)
         js = self.deindent(js)
         expected_js = self.deindent(expected_js)
         if expected_js != js:

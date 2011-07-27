@@ -13,7 +13,7 @@ def compile_gleam(src, target_js, target_python):
     parser = gleamParser(tokens)
     response = parser.prog()
 
-    js = gleam.to_js(response.tree, debug=True)
+    js = gleam.to_js(response.tree, src, debug=True)
     of = file(target_js, 'w')
     of.write(js)
     of.close()

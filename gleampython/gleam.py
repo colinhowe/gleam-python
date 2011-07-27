@@ -6,8 +6,9 @@ def _indent(text):
     return "\n".join(["    " + line for line in text.split("\n")])
 
 class ToJsTraverser(object):
-    def __init__(self, debug=False):
+    def __init__(self, view_name, debug=False):
         self.debug = debug
+        self.view_name = view_name
 
     def _to_js(self, node, context=None):
         node_name = gleamParser.tokenNames[node.type]
@@ -116,11 +117,40 @@ class ToJsTraverser(object):
                 name_node.text, args, value)
 
     def PROG(self, node):
-        return '\n'.join([
-            self._to_js(child)
+        # Macro blocks need to be at the start of the file.
+        # The rest can be in a view sectino if needed
+        macro_nodes = [
+            child
             for child in node.children
+            if child.type == gleamParser.MACRO    
+        ]
+
+        view_nodes = [
+            child
+            for child in node.children
+            if child.type != gleamParser.MACRO    
+        ]
+
+        code = '\n'.join([
+            self._to_js(child)
+            for child in macro_nodes
         ])
 
-def to_js(ast, debug=False):
-    traverser = ToJsTraverser(debug)
+        if view_nodes:
+            view_code = '\n'.join([
+                self._to_js(child)
+                for child in view_nodes
+            ])
+            if code:
+                code += "\n"
+            code += "$gleam.views['%s'] = function() {\n" % self.view_name
+            code += _indent(view_code) 
+            code += "\n}\n"
+
+        return code
+
+def to_js(ast, view_name, debug=False):
+    if view_name.endswith('.gleam'):
+        view_name = view_name[:-6]
+    traverser = ToJsTraverser(view_name, debug)
     return traverser._to_js(ast)

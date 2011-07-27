@@ -21,7 +21,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
             f = open(cwd + sep + self.path)
             self.send_response(200)
-            self.send_header('Content-type', 'text/html')
+            self.send_header('Content-type', 'text/javascript')
             self.end_headers()
             self.wfile.write(f.read())
             f.close()
@@ -41,7 +41,7 @@ class MyHandler(BaseHTTPRequestHandler):
         #
         print gleam
         result = to_html.HtmlCreator().as_html(gleam.nodes)
-        result = '<pre>%s</pre>' % result
+        result = '%s' % result
         result = """<script type="text/javascript" src="gleam.js" ></script>
 <script type="text/javascript" src="samples/gleam_profile.js" ></script>
 """ + result

@@ -1,6 +1,7 @@
 var $gleam = {
     macros: {},
     nodes: [],
+    views: {},
     currentNode: [],
     addMacro: function(name, fn) {
         $gleam.macros[name] = fn;
@@ -39,17 +40,32 @@ var $gleam = {
         for (var i in node.nodes) {
             $gleam.logNodes(node.nodes[i], indent + 4);
         }
+    },
+    insertView: function(viewName, insertId) {
+        /* Runs the given view and inserts the nodes into the element with ID insertId */
+        this.views[viewName]();
+        var container = document.getElementById(insertId);
+        for (var i = 0; i < this.nodes.length; i++) {
+            var node = this.nodes[i];
+            this._insertNode(node, container);
+        }
+        this.nodes = [];
+    },
+    _insertNode: function(node, container) {
+        /* Inserts the given node as HTML into the given container */
+        var nodeElement = document.createElement(node.name);
+        for (var key in node.attrs) {
+            nodeElement.setAttribute(key, node.attrs[key]);
+        }
+        if (node.value) {
+            var textNode = document.createTextNode(node.value);
+            nodeElement.appendChild(textNode);
+        }
+        for (var i = 0; i < node.nodes.length; i++) {
+            this._insertNode(node.nodes[i], nodeElement);
+        }
+        container.appendChild(nodeElement);
     }
 }
 
 $gleam.currentNode = [$gleam];
-
-$gleam.addMacro("form", function(args, value) {
-    var class = args["class"];
-    $gleam.makeNode("form", {class: class}, value);
-});
-$gleam.macros.form({class: "class"}, function() {
-    $gleam.makeNode("span", {}, "hello");
-});
-
-$gleam.logNodes();
