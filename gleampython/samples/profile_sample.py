@@ -1,5 +1,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from os import curdir, sep
+import os
 import time
 
 import gleam_compiler
@@ -10,12 +11,15 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.endswith(".js"):
             path = curdir + sep + self.path
-            path = os.path.normpath(path)
-            if not path.startswith(curdir):
+            path = os.path.abspath(path)
+            cwd = os.path.abspath(curdir) 
+            print path
+            print cwd
+            if not path.startswith(cwd):
                 self.send_error(404,'File Not Found: %s' % self.path)
                 return
 
-            f = open(curdir + sep + self.path)
+            f = open(cwd + sep + self.path)
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -38,6 +42,9 @@ class MyHandler(BaseHTTPRequestHandler):
         print gleam
         result = to_html.HtmlCreator().as_html(gleam.nodes)
         result = '<pre>%s</pre>' % result
+        result = """<script type="text/javascript" src="gleam.js" ></script>
+<script type="text/javascript" src="samples/gleam_profile.js" ></script>
+""" + result
 
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
